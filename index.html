@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="./style.css" />
 
     <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
   </head>
 
   <body>
@@ -92,8 +94,11 @@
                       v-for="(word, index) in s1upper"
                       v-bind:class="{tag: true, 'is-success': s1used[index] }"
                     >
+                      {{ word }}
                     </span>
-                    <span v-for="word in s1extra" class="tag is-danger"> </span>
+                    <span v-for="word in s1extra" class="tag is-danger"
+                      >{{ word }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -132,8 +137,11 @@
                       v-for="(word, index) in s2upper"
                       v-bind:class="{tag: true, 'is-success': s2used[index] }"
                     >
+                      {{ word }}
                     </span>
-                    <span v-for="word in s2extra" class="tag is-danger"> </span>
+                    <span v-for="word in s2extra" class="tag is-danger"
+                      >{{ word }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -172,8 +180,11 @@
                       v-for="(word, index) in s3upper"
                       v-bind:class="{tag: true, 'is-success': s3used[index] }"
                     >
+                      {{ word }}
                     </span>
-                    <span v-for="word in s3extra" class="tag is-danger"> </span>
+                    <span v-for="word in s3extra" class="tag is-danger"
+                      >{{ word }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -201,9 +212,11 @@
                     <span
                       v-for="(word, index) in s4upper"
                       v-bind:class="{tag: true, 'is-success': s4used[index] }"
-                    >
+                      >{{ word }}
                     </span>
-                    <span v-for="word in s4extra" class="tag is-danger"> </span>
+                    <span v-for="word in s4extra" class="tag is-danger"
+                      >{{ word }}</span
+                    >
                   </div>
                 </div>
               </div>
