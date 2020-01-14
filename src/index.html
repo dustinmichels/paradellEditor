@@ -1,0 +1,139 @@
+<div id="app">
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Paradell<span style="color: #6A5ACD">Editor</span>
+      </h1>
+      <!-- Navigation Tabs -->
+      <div class="tabs is-boxed">
+        <ul>
+          <li :class="[mode === 'compose' ? 'is-active' : '']" @click="mode='compose'">
+            <a>
+        <span class="icon is-small"><i class="fas fa-feather" aria-hidden="true"></i></span>
+        <span>Compose</span>
+      </a>
+          </li>
+          <li :class="[mode === 'view' ? 'is-active' : '']" @click="mode='view'">
+            <a>
+        <span class="icon is-small"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+        <span>View</span>
+      </a>
+          </li>
+        </ul>
+      </div>
+
+      <!--  Compose  -->
+      <div v-show="mode === 'compose'">
+        <!--  First Stanza  -->
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <input class="input is-static" type="text" v-model="l1" placeholder="First stanza...">
+              <input class="input is-static" type="text" v-model="l1" disabled>
+              <input class="input is-static" type="text" v-model="l3">
+              <input class="input is-static" type="text" v-model="l3" disabled>
+              <input class="input is-static" type="text" v-model="l5">
+              <input class="input is-static" type="text" v-model="l6">
+            </div>
+          </div>
+          <div class="column">
+            <div class="tag-box">
+              <div class="tags">
+                <span v-for="(word, index) in s1upper" v-bind:class="{tag: true, 'is-success': s1used[index] }">
+          {{ word }}
+        </span>
+                <span v-for="word in s1extra" class="tag is-danger">
+          {{ word }}
+        </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Second Stanza -->
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <input class="input is-static" type="text" v-model="l7" placeholder="Second stanza...">
+              <input class="input is-static" type="text" v-model="l7" disabled>
+              <input class="input is-static" type="text" v-model="l9">
+              <input class="input is-static" type="text" v-model="l9" disabled>
+              <input class="input is-static" type="text" v-model="l11">
+              <input class="input is-static" type="text" v-model="l12">
+            </div>
+          </div>
+          <div class="column">
+            <div class="">
+              <div class="tags">
+                <span v-for="(word, index) in s2upper" v-bind:class="{tag: true, 'is-success': s2used[index] }">
+          {{ word }}
+        </span>
+                <span v-for="word in s2extra" class="tag is-danger">
+          {{ word }}
+        </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Third Stanza -->
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <input class="input is-static" type="text" v-model="l13" placeholder="Third stanza...">
+              <input class="input is-static" type="text" v-model="l13" disabled>
+              <input class="input is-static" type="text" v-model="l15">
+              <input class="input is-static" type="text" v-model="l15" disabled>
+              <input class="input is-static" type="text" v-model="l17">
+              <input class="input is-static" type="text" v-model="l18">
+            </div>
+          </div>
+          <div class="column">
+            <div class="">
+              <div class="tags">
+                <span v-for="(word, index) in s3upper" v-bind:class="{tag: true, 'is-success': s3used[index] }">
+          {{ word }}
+        </span>
+                <span v-for="word in s3extra" class="tag is-danger">
+          {{ word }}
+        </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fourth Stanza -->
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <input class="input is-static" type="text" v-model="l19" placeholder="Final stanza...">
+              <input class="input is-static" type="text" v-model="l20">
+              <input class="input is-static" type="text" v-model="l21">
+              <input class="input is-static" type="text" v-model="l22">
+              <input class="input is-static" type="text" v-model="l23">
+              <input class="input is-static" type="text" v-model="l24">
+            </div>
+          </div>
+          <div class="column">
+            <div class="">
+              <div class="tags">
+                <span v-for="(word, index) in s4upper" v-bind:class="{tag: true, 'is-success': s4used[index] }">
+          {{ word }}
+        </span>
+                <span v-for="word in s4extra" class="tag is-danger">
+          {{ word }}
+        </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  View Mode  -->
+      <div v-show="mode === 'view'">
+        <div class="field">
+          <div class="control">
+            <textarea class="textarea" v-model="wholePoem" rows="30" readonly></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+</div>
