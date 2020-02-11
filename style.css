@@ -1,0 +1,12 @@
+.notebook {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+
+  border: none;
+  border-bottom: 2px dotted lightskyblue;
+
+  border-radius: 0;
+}
