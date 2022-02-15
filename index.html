@@ -314,26 +314,57 @@
 
           <!--  Load Mode  -->
           <div v-show="mode === 'load'">
-            To get started you can copy/paste a paradelle then press 'load
-            input', or load a random one.
-            <button
-              class="button"
-              @click="loadFromInput(this.poemInput)"
-              :disabled="poemInput === ''"
-            >
-              Load Input
-            </button>
+            <div class="columns">
+              <div class="column">
+                <div class="box">
+                  <div class="field">
+                    <div class="control">
+                      <textarea
+                        class="textarea loadarea"
+                        v-model="poemInput"
+                        rows="30"
+                        :placeholder="getRandomExample()"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <button class="button" @click="loadRandom()">Load Random</button>
+              <!-- right side -->
+              <div class="column">
+                <div class="box">
+                  <div class="field">
+                    <p>
+                      To get started you can copy/paste a paradelle then press
+                      'load input', or load a random one.
+                    </p>
+                  </div>
 
-            <div class="field">
-              <div class="control">
-                <textarea
-                  class="textarea loadarea"
-                  v-model="poemInput"
-                  rows="30"
-                  :placeholder="getRandomExample()"
-                ></textarea>
+                  <div class="level">
+                    <div class="level-left">
+                      <p class="level-item">
+                        <a
+                          class="button"
+                          @click="loadFromInput(this.poemInput)"
+                          :disabled="poemInput === ''"
+                        >
+                          <span>Load Input</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-paste"></i>
+                          </span>
+                        </a>
+                      </p>
+                      <p class="level-item">
+                        <a class="button" @click="loadRandom()">
+                          <span>Load Random</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-dice-five"></i>
+                          </span>
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -169,16 +169,15 @@ Vue.createApp({
 
     loadFromInput(poemString) {
       this.load(poemString);
-      // this.notification = "Loaded poem from input.";
       this.poemInput = "";
-      this.mode = "view";
+      this.mode = "compose";
     },
 
     loadRandom() {
       let poemString = this.getRandomExample();
       this.load(poemString);
       this.poemInput = "";
-      this.mode = "view";
+      this.mode = "compose";
     },
 
     load(poemString) {
