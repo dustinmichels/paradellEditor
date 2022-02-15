@@ -9,6 +9,10 @@ input {
   caret-color: #6a5acd;
 }
 
+.title-input {
+  font-weight: bold;
+}
+
 .viewarea {
   background-color: beige;
 }

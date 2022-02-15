@@ -36,17 +36,21 @@ Vue.createApp({
       l22: "",
       l23: "",
       l24: "",
-      examples: {
-        cypress: {
-          title: "",
-          author: "",
-          text: "'Tis the breeze beneath the cypress trees,\n'Tis the breeze beneath the cypress trees,\nWhere shady branches bend and bow,\nWhere shady branches bend and bow.\nBeneath the bend and branches breeze,\nWhere the cypress' bow 'tis shady trees.\n\nInk like stains of sap fold down,\nInk like stains of sap fold down,\nBrown and dripping tears that keep,\nBrown and dripping tears that keep.\nSap like ink and stains of brown,\nTears that fold keep dripping down.\n\nWill such variegated colors blend,\nWill such variegated colors blend,\nAway within envelope of leaves,\nAway within envelope of leaves.\nOf such colors envelope within,\nVariegated leaves away will blend.\n\nWithin the sap 'tis shady brown,\nAnd keep the breeze of that fold down,\nVariegated stains away will blend,\nWhere colors bow and branches bend.\nTears of ink envelope like leaves,\nBeneath such dripping cypress trees.\n\nCopyright © 2003 Sally Ann Roberts",
-        },
-      },
+      examples: [
+        "\"Beneath the Dripping Cypress Trees\"\nBy: Sally Ann Roberts\n\n'Tis the breeze beneath the cypress trees,\n'Tis the breeze beneath the cypress trees,\nWhere shady branches bend and bow,\nWhere shady branches bend and bow.\nBeneath the bend and branches breeze,\nWhere the cypress' bow 'tis shady trees.\n\nInk like stains of sap fold down,\nInk like stains of sap fold down,\nBrown and dripping tears that keep,\nBrown and dripping tears that keep.\nSap like ink and stains of brown,\nTears that fold keep dripping down.\n\nWill such variegated colors blend,\nWill such variegated colors blend,\nAway within envelope of leaves,\nAway within envelope of leaves.\nOf such colors envelope within,\nVariegated leaves away will blend.\n\nWithin the sap 'tis shady brown,\nAnd keep the breeze of that fold down,\nVariegated stains away will blend,\nWhere colors bow and branches bend.\nTears of ink envelope like leaves,\nBeneath such dripping cypress trees.",
+        '"A Paradelle of Winged Flight"\nBy: Mary Ellen Clark\n\nTwilight falls, darkness cover me\nTwilight falls, darkness cover me\nas gentle slumber lures awakening dreams\nas gentle slumber lures awakening dreams\ncover me gentle twilight, darkness lures dreams,\nawakening as slumber falls.\n\nJourney on celestial wings through astral visions\nJourney on celestial wings through astral visions\nand hover above earth-bound limitations\nand hover above earth-bound limitations\non celestial wings, hover above earth bound limitations\nand journey through astral visions.\n\nExplore the expansiveness of self,\nExplore the expansiveness of self,\nlook within and discover your untapped wealth\nlook within and discover your untapped wealth\nlook within the expansiveness of self,\ndiscover and explore your untapped wealth.\n\ncover me, dreams look within darkness\njourney -- discover your gentle awakening;\nslumber lures the expansiveness of self\nthrough astral visions.  Hover above\nearthbound limitations on celestial wings,\nand as twilight falls, explore wealth -- untapped.',
+        "\"Dreamt I of What Came to Me\"\nBy: Dan Tharp\n\nFalling asleep 'neath a cypress tree\nFalling asleep 'neath a cypress tree\nWhat variegated colors came calling to me\nWhat variegated colors came calling to me\n'Neath falling colors, asleep to me\nWhat came calling?... A variegated cypress tree\n\nI dreamt of ink in a well so deep\nI dreamt of ink in a well so deep\nAs an envelope as full of words to eat\nAs an envelope as full of words to eat\nIn an envelope of words, I dreamt to eat\nOf ink as full as a well so deep\n\nSo, away I went, to write of that told\nSo, away I went, to write of that told\nTears as joy, on paper to fold\nTears as joy, on paper to fold\nThat on paper to write, of joy told\nAs tears went away... so I, to fold\n\nJoy as tears, full of words went to calling\nInk as well, in an envelope a falling\nVariegated colors to eat of that told\nSo, away I write on paper to fold\nAs deep asleep, 'neath a cypress tree\nSo, dreamt I... of what came to me",
+        '"A Paradelle of Love"\nBy: Linda E. Newman\n\nTattered tapestries, remnants of forgotten dreams,\nTattered tapestries, remnants of forgotten dreams\nBlackened by the unforgiving fire of love,\nBlackened by the unforgiving fire of love;\nBlackened by the fire, tattered remnants of\nForgotten tapestries, unforgiving dreams of love.\n\nI douse Love’s flames with crystal tears,\nI douse Love’s flames with crystal tears,\nPieces of my broken heart, shattered souvenirs, \nPieces of my broken heart, shattered souvenirs;\nFlames of my heart I douse with tears;\nLove’s shattered crystal pieces, broken souvenirs.\n\nAll that remain are charred moonbeams,\nAll that remain are charred moonbeams\nAnd sooty ashes of now-dead dreams,\nAnd sooty ashes of now-dead dreams;\nSooty and charred, now-dead moonbeams,\nAshes are all that remain of dreams.\n\nWith tears of love I douse the flames, \nCharred remnants of ashes all that remain, \nDreams are forgotten, fire blackened and tattered,\nPieces of my unforgiving heart, shattered \nBy broken souvenirs of crystal moonbeams,\nLove’s sooty tapestries’ now-dead dreams.',
+        '"Untouched Beauty"\nBy: Marie Summers\n\nAmong the variegated skies and cypress trees,\nAmong the variegated skies and cypress trees,\nLies a poet’s inspiration hidden away untouched,\nLies a poet’s inspiration hidden away untouched.\nHidden away among a poet’s inspiration\nLies variegated skies and the untouched cypress trees.\n\nThe tears shed from the beauty of this serene sight,\nThe tears shed from the beauty of this serene sight,\nWill unleash the poet’s ink to flow endlessly,\nWill unleash the poet’s ink to flow endlessly.\nThe tears shed will flow endlessly from the poet’s ink\nTo unleash the beauty of this serene sight.\n\nJournals, they will be filled with letters to be written,\nJournals, they will be filled with letters to be written,\nEnvelopes will be stuffed with the sweet words of nature,\nEnvelopes will be stuffed with the sweet words of nature.\nJournals to be stuffed with the sweet words of nature\nEnvelopes will be filled with letters, written they will be.\n\nThe poet’s ink lies hidden among the cypress trees;\nVariegated skies to shed away untouched tears.\nJournals will be filled with the sweet words of inspiration,\nEnvelopes will be stuffed with a poet’s sight,\nFrom the letters to be written, they will flow endlessly,\nAnd unleash the serene beauty of this nature.',
+      ],
     };
   },
 
   methods: {
+    getRandomExample() {
+      return this.examples[Math.floor(Math.random() * this.examples.length)];
+    },
+
     clear() {
       this.title = "";
       this.author = "";
@@ -80,12 +84,6 @@ Vue.createApp({
       if (this.author) {
         author = `By: ${this.author}`;
       }
-
-      // meta = "";
-      // if (title || author) {
-      //   meta = [title, author].join("\n");
-      //   meta = meta + "\n";
-      // }
 
       let poem = [
         this.l1,
@@ -124,7 +122,8 @@ Vue.createApp({
       // meta
       const title = lines?.[0];
       this.title = title.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
-      this.author = lines?.[1].slice(4);
+      const author = lines?.[1];
+      this.author = author?.slice(4);
       // stanza 1
       this.l1 = lines?.[0 + 3];
       this.l3 = lines?.[2 + 3];
@@ -171,6 +170,13 @@ Vue.createApp({
     loadFromInput(poemString) {
       this.load(poemString);
       // this.notification = "Loaded poem from input.";
+      this.poemInput = "";
+      this.mode = "view";
+    },
+
+    loadRandom() {
+      let poemString = this.getRandomExample();
+      this.load(poemString);
       this.poemInput = "";
       this.mode = "view";
     },
