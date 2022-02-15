@@ -15,12 +15,17 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="./style.css" />
 
-    <!-- JavaScript -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script> -->
+    <!-- Vue -->
     <script src="https://unpkg.com/vue@3"></script>
   </head>
 
@@ -28,9 +33,44 @@
     <div id="app">
       <section class="section">
         <div class="container">
-          <h1 class="title">
-            Paradell<span style="color: #6a5acd">Editor</span>
-          </h1>
+          <!-- Header -->
+          <nav class="level">
+            <!-- Left side -->
+            <div class="level-left">
+              <div class="level-item">
+                <a class="title" href="/">
+                  Paradell<span style="color: #6a5acd">Editor</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Right side -->
+            <div class="level-right">
+              <p class="level-item">
+                <a class="button is-danger is-outlined" @click="clear">
+                  <span>Clear</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-eraser"></i>
+                  </span>
+                </a>
+              </p>
+              <p class="level-item">
+                <a class="button is-success is-outlined" @click="share">
+                  <span>Share</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-share"></i>
+                  </span>
+                </a>
+              </p>
+            </div>
+          </nav>
+
+          <div v-if="notify">
+            <div class="notification is-warning is-light">
+              <button class="delete" @click="notify=false;"></button>
+              Shareable URL copied to clipboard!
+            </div>
+          </div>
 
           <!-- Navigation Tabs -->
           <div class="tabs is-boxed">
@@ -71,7 +111,6 @@
                     type="text"
                     v-model="l1"
                     placeholder="Click here to begin writing the first stanza..."
-                    autofocus
                   />
                   <input
                     class="input is-static"

@@ -1,0 +1,10 @@
+body,
+input,
+textarea {
+  /* font-family: "Courier New", monospace; */
+  font-family: "Courier Prime", monospace;
+}
+
+input {
+  caret-color: #6a5acd;
+}
