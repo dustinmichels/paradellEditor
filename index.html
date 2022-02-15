@@ -66,6 +66,7 @@
           </nav>
 
           <!-- Notifications -->
+
           <div v-if="notification">
             <div class="notification is-warning is-light">
               <button class="delete" @click="notification=false;"></button>
@@ -343,7 +344,7 @@
                   <div class="level">
                     <div class="level-left">
                       <p class="level-item">
-                        <a
+                        <button
                           class="button"
                           @click="loadFromInput(this.poemInput)"
                           :disabled="poemInput === ''"
@@ -352,15 +353,15 @@
                           <span class="icon is-small">
                             <i class="fas fa-paste"></i>
                           </span>
-                        </a>
+                        </button>
                       </p>
                       <p class="level-item">
-                        <a class="button" @click="loadRandom()">
+                        <button class="button" @click="loadRandom()">
                           <span>Load Random</span>
                           <span class="icon is-small">
                             <i class="fas fa-dice-five"></i>
                           </span>
-                        </a>
+                        </button>
                       </p>
                     </div>
                   </div>
