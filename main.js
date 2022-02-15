@@ -1,62 +1,63 @@
-var app = new Vue({
-  el: "#app",
-  data: {
-    mode: "compose",
-    modalActive: false,
-    l1: "",
-    l3: "",
-    l5: "",
-    l6: "",
-    l7: "",
-    l9: "",
-    l11: "",
-    l12: "",
-    l13: "",
-    l15: "",
-    l17: "",
-    l18: "",
-    l19: "",
-    l20: "",
-    l21: "",
-    l22: "",
-    l23: "",
-    l24: "",
+// var app = new Vue({
+Vue.createApp({
+  // el: "#app",
+  data() {
+    return {
+      mode: "compose",
+      modalActive: false,
+      l1: "",
+      l3: "",
+      l5: "",
+      l6: "",
+      l7: "",
+      l9: "",
+      l11: "",
+      l12: "",
+      l13: "",
+      l15: "",
+      l17: "",
+      l18: "",
+      l19: "",
+      l20: "",
+      l21: "",
+      l22: "",
+      l23: "",
+      l24: "",
+    };
   },
   computed: {
-    wholePoem: {
-      get() {
-        return [
-          this.l1,
-          this.l1,
-          this.l3,
-          this.l3,
-          this.l5,
-          this.l6,
-          "",
-          this.l7,
-          this.l7,
-          this.l9,
-          this.l9,
-          this.l11,
-          this.l12,
-          "",
-          this.l13,
-          this.l13,
-          this.l15,
-          this.l15,
-          this.l17,
-          this.l18,
-          "",
-          this.l19,
-          this.l20,
-          this.l21,
-          this.l22,
-          this.l23,
-          this.l24,
-        ].join("\n");
-      },
-      set(poem) {},
+    wholePoem() {
+      return [
+        this.l1,
+        this.l1,
+        this.l3,
+        this.l3,
+        this.l5,
+        this.l6,
+        "",
+        this.l7,
+        this.l7,
+        this.l9,
+        this.l9,
+        this.l11,
+        this.l12,
+        "",
+        this.l13,
+        this.l13,
+        this.l15,
+        this.l15,
+        this.l17,
+        this.l18,
+        "",
+        this.l19,
+        this.l20,
+        this.l21,
+        this.l22,
+        this.l23,
+        this.l24,
+      ].join("\n");
     },
+
     // --- stanza 1 ---
     s1upper() {
       return tokenizeStanzas([this.l1, this.l3]);
@@ -124,7 +125,7 @@ var app = new Vue({
       return findExtra(this.s4upper, this.s4lower);
     },
   },
-});
+}).mount("#app");
 
 // --- Helper functions ---
 
