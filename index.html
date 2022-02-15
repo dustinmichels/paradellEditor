@@ -33,7 +33,7 @@
     <div id="app">
       <section class="section">
         <div class="container">
-          <!-- Header -->
+          <!-- Control Buttons -->
           <nav class="level">
             <!-- Left side -->
             <div class="level-left">
@@ -65,10 +65,12 @@
             </div>
           </nav>
 
-          <div v-if="notify">
+          <!-- Notifications -->
+          <div v-if="notification">
             <div class="notification is-warning is-light">
-              <button class="delete" @click="notify=false;"></button>
-              Shareable URL copied to clipboard!
+              <button class="delete" @click="notification=false;"></button>
+              {{ notification }}
+              <a target="_blank" :href="shareUrl">Link</a>
             </div>
           </div>
 
@@ -97,11 +99,42 @@
                   <span>View</span>
                 </a>
               </li>
+              <li
+                :class="[mode === 'load' ? 'is-active' : '']"
+                @click="mode='load'"
+              >
+                <a>
+                  <span class="icon is-small"
+                    ><i class="fas fa-paste" aria-hidden="true"></i
+                  ></span>
+                  <span>Load</span>
+                </a>
+              </li>
             </ul>
           </div>
 
           <!--  Compose  -->
           <div v-show="mode === 'compose'">
+            <!--  Title & Author -->
+            <div class="columns">
+              <div class="column">
+                <div class="box">
+                  <input
+                    class="input is-static"
+                    type="text"
+                    v-model="title"
+                    placeholder="Title"
+                  />
+                  <input
+                    class="input is-static"
+                    type="text"
+                    v-model="author"
+                    placeholder="Author"
+                  />
+                </div>
+              </div>
+            </div>
+
             <!--  First Stanza  -->
             <div class="columns">
               <div class="column">
@@ -270,10 +303,29 @@
             <div class="field">
               <div class="control">
                 <textarea
-                  class="textarea"
+                  class="textarea viewarea"
                   v-model="wholePoem"
                   rows="30"
                   readonly
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!--  Load Mode  -->
+          <div v-show="mode === 'load'">
+            Paste a paradelle then press load.
+            <button class="button" @click="loadFromInput(this.poemInput)">
+              Load
+            </button>
+
+            <div class="field">
+              <div class="control">
+                <textarea
+                  class="textarea loadarea"
+                  v-model="poemInput"
+                  rows="30"
+                  :placeholder="examples['cypress']['text']"
                 ></textarea>
               </div>
             </div>

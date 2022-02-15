@@ -2,14 +2,22 @@ Vue.createApp({
   created() {
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("poem")) {
-      this.load(urlParams.get("poem"));
+      this.loadFromUrl(urlParams.get("poem"));
+    }
+    if (urlParams.has("mode")) {
+      this.mode = urlParams.get("mode");
     }
   },
 
   data() {
     return {
       mode: "compose",
-      notify: false,
+      timeout: null,
+      notification: "",
+      shareUrl: "",
+      poemInput: "",
+      title: "",
+      author: "",
       l1: "",
       l3: "",
       l5: "",
@@ -28,11 +36,20 @@ Vue.createApp({
       l22: "",
       l23: "",
       l24: "",
+      examples: {
+        cypress: {
+          title: "",
+          author: "",
+          text: "'Tis the breeze beneath the cypress trees,\n'Tis the breeze beneath the cypress trees,\nWhere shady branches bend and bow,\nWhere shady branches bend and bow.\nBeneath the bend and branches breeze,\nWhere the cypress' bow 'tis shady trees.\n\nInk like stains of sap fold down,\nInk like stains of sap fold down,\nBrown and dripping tears that keep,\nBrown and dripping tears that keep.\nSap like ink and stains of brown,\nTears that fold keep dripping down.\n\nWill such variegated colors blend,\nWill such variegated colors blend,\nAway within envelope of leaves,\nAway within envelope of leaves.\nOf such colors envelope within,\nVariegated leaves away will blend.\n\nWithin the sap 'tis shady brown,\nAnd keep the breeze of that fold down,\nVariegated stains away will blend,\nWhere colors bow and branches bend.\nTears of ink envelope like leaves,\nBeneath such dripping cypress trees.\n\nCopyright © 2003 Sally Ann Roberts",
+        },
+      },
     };
   },
 
   methods: {
     clear() {
+      this.title = "";
+      this.author = "";
       this.l1 = "";
       this.l3 = "";
       this.l5 = "";
@@ -54,7 +71,23 @@ Vue.createApp({
     },
 
     poemDataToString() {
-      return [
+      title = "";
+      if (this.title) {
+        title = `"${this.title}"`;
+      }
+
+      author = "";
+      if (this.author) {
+        author = `By: ${this.author}`;
+      }
+
+      // meta = "";
+      // if (title || author) {
+      //   meta = [title, author].join("\n");
+      //   meta = meta + "\n";
+      // }
+
+      let poem = [
         this.l1,
         this.l1,
         this.l3,
@@ -83,48 +116,75 @@ Vue.createApp({
         this.l23,
         this.l24,
       ].join("\n");
+      return [title, author, "", poem].join("\n");
     },
 
-    poemStringToData(str) {
+    parsePoemFromString(str) {
       let lines = str.split("\n");
+      // meta
+      const title = lines?.[0];
+      this.title = title.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
+      this.author = lines?.[1].slice(4);
       // stanza 1
-      this.l1 = lines?.[0];
-      this.l3 = lines?.[2];
-      this.l5 = lines?.[4];
-      this.l6 = lines?.[5];
+      this.l1 = lines?.[0 + 3];
+      this.l3 = lines?.[2 + 3];
+      this.l5 = lines?.[4 + 3];
+      this.l6 = lines?.[5 + 3];
       // stanza 2
-      this.l7 = lines?.[7];
-      this.l9 = lines?.[9];
-      this.l11 = lines?.[11];
-      this.l12 = lines?.[12];
+      this.l7 = lines?.[7 + 3];
+      this.l9 = lines?.[9 + 3];
+      this.l11 = lines?.[11 + 3];
+      this.l12 = lines?.[12 + 3];
       // stanza 3
-      this.l13 = lines?.[14];
-      this.l15 = lines?.[16];
-      this.l17 = lines?.[18];
-      this.l18 = lines?.[19];
+      this.l13 = lines?.[14 + 3];
+      this.l15 = lines?.[16 + 3];
+      this.l17 = lines?.[18 + 3];
+      this.l18 = lines?.[19 + 3];
       // stanza 4
-      this.l19 = lines?.[21];
-      this.l20 = lines?.[22];
-      this.l21 = lines?.[23];
-      this.l22 = lines?.[24];
-      this.l23 = lines?.[25];
-      this.l24 = lines?.[26];
+      this.l19 = lines?.[21 + 3];
+      this.l20 = lines?.[22 + 3];
+      this.l21 = lines?.[23 + 3];
+      this.l22 = lines?.[24 + 3];
+      this.l23 = lines?.[25 + 3];
+      this.l24 = lines?.[26 + 3];
     },
 
     share() {
-      // form url
+      // formulate url
       let baseUrl = window.location.href.split("?")[0];
-      let url = baseUrl + "?poem=" + encode(this.poemDataToString());
+      let base64Poem = encodeBase64(this.poemDataToString());
+      let url = `${baseUrl}?mode=view&poem=${base64Poem}`;
       console.log(url);
       navigator.clipboard.writeText(url);
       // change current URL
       window.history.pushState({}, document.title, url);
       // launch notification
-      this.notify = true;
+      this.notification = "Shareable URL copied to clipboard!";
+      this.shareUrl = url;
+    },
+
+    loadFromUrl(encodedPoem) {
+      let decodedPoem = decodeBase64(encodedPoem);
+      this.load(decodedPoem);
+    },
+
+    loadFromInput(poemString) {
+      this.load(poemString);
+      // this.notification = "Loaded poem from input.";
+      this.poemInput = "";
+      this.mode = "view";
     },
 
     load(poemString) {
-      this.poemStringToData(decode(poemString));
+      this.clear();
+      this.parsePoemFromString(poemString);
+    },
+  },
+
+  watch: {
+    notification: function () {
+      window.clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => (this.notification = false), 5000);
     },
   },
 
@@ -204,14 +264,6 @@ Vue.createApp({
 
 // --- Helper functions ---
 
-function encode(str) {
-  return btoa(str);
-}
-
-function decode(encodedString) {
-  return atob(encodedString);
-}
-
 function tokenize(words) {
   words = words.replace(/[^A-Za-z0-9\s]/g, " ");
   let tokens = words.toLowerCase().split(" ");
@@ -219,11 +271,15 @@ function tokenize(words) {
 }
 
 function tokenizeStanzas(stanzas) {
-  let tokens = [];
-  stanzas.forEach((s) => {
-    tokens.push(...tokenize(s));
-  });
-  return tokens;
+  try {
+    let tokens = [];
+    stanzas.forEach((s) => {
+      tokens.push(...tokenize(s));
+    });
+    return tokens;
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -262,4 +318,43 @@ function findExtra(upper, lower) {
     }
   });
   return extraWords;
+}
+
+// -------------------
+// Encoding & Decoding
+//   Based on: From: https://developer.mozilla.org/en-US/docs/Web/API/btoa
+// -------------------
+
+function encodeBase64(str) {
+  return btoa(toBinary(str));
+}
+
+function decodeBase64(encodedString) {
+  return fromBinary(atob(encodedString));
+}
+
+function toBinary(string) {
+  const codeUnits = new Uint16Array(string.length);
+  for (let i = 0; i < codeUnits.length; i++) {
+    codeUnits[i] = string.charCodeAt(i);
+  }
+  const charCodes = new Uint8Array(codeUnits.buffer);
+  let result = "";
+  for (let i = 0; i < charCodes.byteLength; i++) {
+    result += String.fromCharCode(charCodes[i]);
+  }
+  return result;
+}
+
+function fromBinary(binary) {
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  const charCodes = new Uint16Array(bytes.buffer);
+  let result = "";
+  for (let i = 0; i < charCodes.length; i++) {
+    result += String.fromCharCode(charCodes[i]);
+  }
+  return result;
 }

@@ -8,3 +8,7 @@ textarea {
 input {
   caret-color: #6a5acd;
 }
+
+.viewarea {
+  background-color: beige;
+}
