@@ -20,7 +20,7 @@ var app = new Vue({
     l21: "",
     l22: "",
     l23: "",
-    l24: ""
+    l24: "",
   },
   computed: {
     wholePoem: {
@@ -52,10 +52,10 @@ var app = new Vue({
           this.l21,
           this.l22,
           this.l23,
-          this.l24
+          this.l24,
         ].join("\n");
       },
-      set(poem) {}
+      set(poem) {},
     },
     // --- stanza 1 ---
     s1upper() {
@@ -104,7 +104,7 @@ var app = new Vue({
         this.l7,
         this.l9,
         this.l13,
-        this.l15
+        this.l15,
       ]);
     },
     s4lower() {
@@ -114,7 +114,7 @@ var app = new Vue({
         this.l21,
         this.l22,
         this.l23,
-        this.l24
+        this.l24,
       ]);
     },
     s4used() {
@@ -122,8 +122,8 @@ var app = new Vue({
     },
     s4extra() {
       return findExtra(this.s4upper, this.s4lower);
-    }
-  }
+    },
+  },
 });
 
 // --- Helper functions ---
@@ -131,12 +131,12 @@ var app = new Vue({
 function tokenize(words) {
   words = words.replace(/[^A-Za-z0-9\s]/g, " ");
   let tokens = words.toLowerCase().split(" ");
-  return tokens.filter(t => t != "");
+  return tokens.filter((t) => t != "");
 }
 
 function tokenizeStanzas(stanzas) {
   let tokens = [];
-  stanzas.forEach(s => {
+  stanzas.forEach((s) => {
     tokens.push(...tokenize(s));
   });
   // tokens.sort();
@@ -151,8 +151,8 @@ function findUsed(upper, lower) {
   let lowerWords = lower.slice();
   let wordUsed = [];
   let res;
-  upper.forEach(w => {
-    let idx = lowerWords.findIndex(el => el === w);
+  upper.forEach((w) => {
+    let idx = lowerWords.findIndex((el) => el === w);
     if (idx > -1) {
       res = true;
       lowerWords.splice(idx, 1);
@@ -170,8 +170,8 @@ function findUsed(upper, lower) {
 function findExtra(upper, lower) {
   let upperWords = upper.slice();
   let extraWords = [];
-  lower.forEach(w => {
-    let idx = upperWords.findIndex(el => el === w);
+  lower.forEach((w) => {
+    let idx = upperWords.findIndex((el) => el === w);
     if (idx > -1) {
       upperWords.splice(idx, 1);
     } else {
