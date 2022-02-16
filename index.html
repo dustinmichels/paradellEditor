@@ -6,32 +6,95 @@
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <title>ParadellEditor</title>
 
-    <!-- Style -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
-    />
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
-    ></script>
-
+    <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap"
       rel="stylesheet"
     />
-
+    <!-- Font awesome -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <!-- Bulma stylesheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+    />
+    <!-- My styles -->
     <link rel="stylesheet" href="./style.css" />
-
-    <!-- JavaScript -->
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31"></script>
+    <!-- lz-string library -->
     <script language="javascript" src="lz-string.min.js"></script>
-    <script src="https://unpkg.com/vue@3"></script>
   </head>
 
   <body>
     <div id="app">
+      <!-- INFO modal -->
+      <div class="modal" v-bind:class="{ 'is-active': showModal }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">About 🤔</p>
+            <button
+              class="delete"
+              aria-label="close"
+              @click="showModal = false"
+            ></button>
+          </header>
+          <section class="modal-card-body content">
+            <p>
+              The paradelle is a very rigid, modern poetic form. According to
+              <a target="_blank" href="https://en.wikipedia.org/wiki/Paradelle"
+                >Wikipedia</a
+              >:
+            </p>
+            <blockquote>
+              Billy Collins originally said the paradelle was invented in
+              11th-century France, but he later admitted that he invented it
+              himself to parody strict forms of poetry, particularly the
+              <a target="_blank" href="https://en.wikipedia.org/wiki/Villanelle"
+                >villanelle</a
+              >. His sample paradelle, "Paradelle for Susan" (c. 1997), was
+              seemingly intentionally terrible, completing the final stanza with
+              the line "Darken the mountain, time and find was my into it was
+              with to to".
+            </blockquote>
+            <p>
+              Despite it's satirical beginnings, people have gone on to write
+              some very beautiful paradelles. The tricky part is that you must
+              re-use words introduced in previous couplets and stanzas in later
+              couplets and stanzas. This editor exists to help you keep track of
+              the words you need to use.
+            </p>
+            Here are the
+            <a
+              target="_blank"
+              href="https://www.writersdigest.com/write-better-poetry/poetic-form-paradelle"
+              >complete rules</a
+            >:
+            <ul>
+              <li>The paradelle is a 4-stanza poem.</li>
+              <li>Each stanza consists of 6 lines.</li>
+              <li>
+                For the first 3 stanzas: the 1st and 2nd lines should be the
+                same; the 3rd and 4th lines should also be the same; and the 5th
+                and 6th lines should be composed of all the words from the 1st
+                and 3rd lines and only the words from the 1st and 3rd lines.
+              </li>
+              <li>
+                The final stanza should be composed of all the words in the 5th
+                and 6th lines of the first three stanzas and only the words from
+                the 5th and 6th lines of the first three stanzas.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
       <section class="section">
         <div class="container">
           <!-- Control Buttons -->
@@ -87,7 +150,7 @@
                 </div>
               </div>
               <p class="level-item">
-                <a class="button is-info is-outlined" @click="">
+                <a class="button is-info is-outlined" @click="showModal = true">
                   <span>About</span>
                   <span class="icon is-small">
                     <i class="fas fa-question"></i>
@@ -109,8 +172,7 @@
           <div v-if="notification">
             <div class="notification is-warning is-light">
               <button class="delete" @click="notification=false;"></button>
-              {{ notification }}
-              <a target="_blank" :href="shareUrl">Link</a>
+              <span v-html="notification"></span>
             </div>
           </div>
 
@@ -397,6 +459,17 @@
           </div>
         </div>
       </section>
+
+      <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            Created by
+            <a href="https://dustinmichels.com">Dustin Michels</a>. Updated
+            2022. Source code
+            <a href="https://github.com/dustinmichels/paradellEditor">here</a>.
+          </p>
+        </div>
+      </footer>
     </div>
 
     <script src="./main.js"></script>

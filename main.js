@@ -1,5 +1,6 @@
 Vue.createApp({
   created() {
+    // parse URL params
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("poem")) {
       this.loadFromUrl(urlParams.get("poem"));
@@ -7,14 +8,20 @@ Vue.createApp({
     if (urlParams.has("mode")) {
       this.mode = urlParams.get("mode");
     }
+    // register hotkey to close modal
+    window.addEventListener("keydown", (e) => {
+      if (e.key == "Escape") {
+        this.showModal = false;
+      }
+    });
   },
 
   data() {
     return {
+      showModal: false,
       mode: "compose",
       timeout: null,
       notification: "",
-      shareUrl: "",
       poemInput: "",
       title: "",
       author: "",
@@ -74,7 +81,7 @@ Vue.createApp({
       this.l24 = "";
     },
 
-    poemDataToString() {
+    fmtPoemToString() {
       title = "";
       if (this.title) {
         title = `"${this.title}"`;
@@ -117,6 +124,14 @@ Vue.createApp({
       return [title, author, "", poem].join("\n");
     },
 
+    tryToParse(str) {
+      try {
+        this.parsePoemFromString(str);
+      } catch {
+        this.notification = "Could not parse poem from URL.";
+      }
+    },
+
     parsePoemFromString(str) {
       let lines = str.split("\n");
       // meta
@@ -151,15 +166,14 @@ Vue.createApp({
     share() {
       // formulate url
       let baseUrl = window.location.href.split("?")[0];
-      let base64Poem = compressToEncodedURI(this.poemDataToString());
+      let base64Poem = compressToEncodedURI(this.fmtPoemToString());
       let url = `${baseUrl}?mode=view&poem=${base64Poem}`;
       console.log(url);
       navigator.clipboard.writeText(url);
       // change current URL
       window.history.pushState({}, document.title, url);
       // launch notification
-      this.notification = "Shareable URL copied to clipboard!";
-      this.shareUrl = url;
+      this.notification = `Shareable URL copied to clipboard! <a target="_blank" href="${url}">Link</a>`;
     },
 
     loadFromUrl(encodedPoem) {
@@ -182,7 +196,7 @@ Vue.createApp({
 
     load(poemString) {
       this.clear();
-      this.parsePoemFromString(poemString);
+      this.tryToParse(poemString);
     },
   },
 
@@ -195,7 +209,7 @@ Vue.createApp({
 
   computed: {
     wholePoem() {
-      return this.poemDataToString();
+      return this.fmtPoemToString();
     },
 
     // --- stanza 1 ---

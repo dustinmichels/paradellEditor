@@ -2,8 +2,11 @@ body,
 input,
 textarea,
 span {
-  /* font-family: "Courier New", monospace; */
   font-family: "Courier Prime", monospace;
+}
+
+.modal-card-body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 input {
