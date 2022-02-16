@@ -1,6 +1,7 @@
 body,
 input,
-textarea {
+textarea,
+span {
   /* font-family: "Courier New", monospace; */
   font-family: "Courier Prime", monospace;
 }
@@ -12,12 +13,6 @@ input {
 .title-input {
   font-weight: bold;
 }
-
-/* .notification {
-  position: absolute;
-  margin-bottom: 1px;
-  margin-left: 1px;
-} */
 
 .viewarea {
   background-color: beige;

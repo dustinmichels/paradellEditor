@@ -54,9 +54,48 @@
                   </span>
                 </a>
               </p>
+              <div class="level-item">
+                <div class="dropdown is-hoverable">
+                  <div class="dropdown-trigger">
+                    <button
+                      class="button is-info is-outlined"
+                      aria-haspopup="true"
+                      aria-controls="dropdown-menu4"
+                    >
+                      <span>Load Example</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <a class="dropdown-item" @click="loadRandom()">
+                        Load random
+                      </a>
+                      <hr class="dropdown-divider" />
+                      <a
+                        v-for="(example, index) in examples"
+                        class="dropdown-item"
+                        @click="this.load(example);"
+                      >
+                        {{ example.split("\n")[0].slice(1,-1) }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <p class="level-item">
-                <a class="button is-success is-outlined" @click="share">
-                  <span>Share</span>
+                <a class="button is-info is-outlined" @click="">
+                  <span>About</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-question"></i>
+                  </span>
+                </a>
+              </p>
+              <p class="level-item">
+                <a class="button is-info is-outlined" @click="share">
+                  <span>Share Poem</span>
                   <span class="icon is-small">
                     <i class="fas fa-share"></i>
                   </span>
@@ -66,7 +105,6 @@
           </nav>
 
           <!-- Notifications -->
-
           <div v-if="notification">
             <div class="notification is-warning is-light">
               <button class="delete" @click="notification=false;"></button>
@@ -97,7 +135,7 @@
                   <span class="icon is-small"
                     ><i class="fas fa-book-open" aria-hidden="true"></i
                   ></span>
-                  <span>View</span>
+                  <span>Read</span>
                 </a>
               </li>
               <li
@@ -108,7 +146,7 @@
                   <span class="icon is-small"
                     ><i class="fas fa-paste" aria-hidden="true"></i
                   ></span>
-                  <span>Load</span>
+                  <span>Paste</span>
                 </a>
               </li>
             </ul>
@@ -337,33 +375,20 @@
                   <div class="field">
                     <p>
                       To get started you can copy/paste a paradelle then press
-                      'load input', or load a random one.
+                      'load input'.
                     </p>
                   </div>
-
-                  <div class="level">
-                    <div class="level-left">
-                      <p class="level-item">
-                        <button
-                          class="button"
-                          @click="loadFromInput(this.poemInput)"
-                          :disabled="poemInput === ''"
-                        >
-                          <span>Load Input</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-paste"></i>
-                          </span>
-                        </button>
-                      </p>
-                      <p class="level-item">
-                        <button class="button" @click="loadRandom()">
-                          <span>Load Random</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-dice-five"></i>
-                          </span>
-                        </button>
-                      </p>
-                    </div>
+                  <div class="field">
+                    <button
+                      class="button"
+                      @click="loadFromInput(this.poemInput)"
+                      :disabled="poemInput === ''"
+                    >
+                      <span>Load Input</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-paste"></i>
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
