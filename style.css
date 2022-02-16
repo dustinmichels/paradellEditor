@@ -5,7 +5,8 @@ span {
   font-family: "Courier Prime", monospace;
 }
 
-.modal-card-body {
+.modal-card-body,
+.alt-style {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
@@ -17,10 +18,10 @@ input {
   font-weight: bold;
 }
 
-.viewarea {
-  background-color: beige;
-}
-
 .author-input {
   font-style: italic;
+}
+
+.viewarea {
+  background-color: beige;
 }

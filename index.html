@@ -21,19 +21,15 @@
     <!-- Bulma stylesheet -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
     <!-- My styles -->
     <link rel="stylesheet" href="./style.css" />
-    <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31"></script>
-    <!-- lz-string library -->
-    <script language="javascript" src="lz-string.min.js"></script>
   </head>
 
   <body>
     <div id="app">
-      <!-- INFO modal -->
+      <!-- "About" pop-up modal -->
       <div class="modal" v-bind:class="{ 'is-active': showModal }">
         <div class="modal-background"></div>
         <div class="modal-card">
@@ -107,7 +103,6 @@
                 </a>
               </div>
             </div>
-
             <!-- Right side -->
             <div class="level-right">
               <p class="level-item">
@@ -169,7 +164,7 @@
           </nav>
 
           <!-- Notifications -->
-          <div v-if="notification">
+          <div class="block" v-if="notification">
             <div class="notification is-warning is-light">
               <button class="delete" @click="notification=false;"></button>
               <span v-html="notification"></span>
@@ -417,6 +412,7 @@
           <!--  Load Mode  -->
           <div v-show="mode === 'load'">
             <div class="columns">
+              <!-- left side (input window) -->
               <div class="column">
                 <div class="box">
                   <div class="field">
@@ -431,14 +427,15 @@
                   </div>
                 </div>
               </div>
-
-              <!-- right side -->
+              <!-- right side (description) -->
               <div class="column">
                 <div class="box">
                   <div class="field">
-                    <p>
-                      To get started you can copy/paste a paradelle then press
-                      'load input'.
+                    <p class="alt-style">
+                      If you want to load a pre-written paradelle into the
+                      editor, you can copy/paste it here, then press "load
+                      input." Make sure to follow the structure demonstrated in
+                      the text area.
                     </p>
                   </div>
                   <div class="field">
@@ -460,6 +457,7 @@
         </div>
       </section>
 
+      <!-- FOOTER -->
       <footer class="footer">
         <div class="content has-text-centered">
           <p>
@@ -472,6 +470,9 @@
       </footer>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31"></script>
+    <script language="javascript" src="lz-string.min.js"></script>
     <script src="./main.js"></script>
   </body>
 </html>
