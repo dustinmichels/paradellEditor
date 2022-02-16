@@ -5,3 +5,7 @@ A [paradelle](http://www.shadowpoetry.com/resources/wip/paradelle.html) is a poe
 This editor app helps you keep track of which words you have already used, aiding in the writing process.
 
 > Try it out: https://dustinmichels.github.io/paradellEditor/
+
+## Dependencies
+
+Uses [lz-string](https://pieroxy.net/blog/pages/lz-string/index.html) to compress poems into URI component that can be shared in URL.

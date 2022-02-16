@@ -151,7 +151,7 @@ Vue.createApp({
     share() {
       // formulate url
       let baseUrl = window.location.href.split("?")[0];
-      let base64Poem = encodeBase64(this.poemDataToString());
+      let base64Poem = compressToEncodedURI(this.poemDataToString());
       let url = `${baseUrl}?mode=view&poem=${base64Poem}`;
       console.log(url);
       navigator.clipboard.writeText(url);
@@ -163,7 +163,7 @@ Vue.createApp({
     },
 
     loadFromUrl(encodedPoem) {
-      let decodedPoem = decodeBase64(encodedPoem);
+      let decodedPoem = decompressFromEncodedURI(encodedPoem);
       this.load(decodedPoem);
     },
 
@@ -327,39 +327,13 @@ function findExtra(upper, lower) {
 
 // -------------------
 // Encoding & Decoding
-//   Based on: From: https://developer.mozilla.org/en-US/docs/Web/API/btoa
+// Using LZString: https://pieroxy.net/blog/pages/lz-string/index.html
 // -------------------
 
-function encodeBase64(str) {
-  return btoa(toBinary(str));
+function compressToEncodedURI(str) {
+  return LZString.compressToEncodedURIComponent(str);
 }
 
-function decodeBase64(encodedString) {
-  return fromBinary(atob(encodedString));
-}
-
-function toBinary(string) {
-  const codeUnits = new Uint16Array(string.length);
-  for (let i = 0; i < codeUnits.length; i++) {
-    codeUnits[i] = string.charCodeAt(i);
-  }
-  const charCodes = new Uint8Array(codeUnits.buffer);
-  let result = "";
-  for (let i = 0; i < charCodes.byteLength; i++) {
-    result += String.fromCharCode(charCodes[i]);
-  }
-  return result;
-}
-
-function fromBinary(binary) {
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < bytes.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  const charCodes = new Uint16Array(bytes.buffer);
-  let result = "";
-  for (let i = 0; i < charCodes.length; i++) {
-    result += String.fromCharCode(charCodes[i]);
-  }
-  return result;
+function decompressFromEncodedURI(encodedString) {
+  return LZString.decompressFromEncodedURIComponent(encodedString);
 }

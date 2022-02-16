@@ -17,3 +17,7 @@ input {
 .viewarea {
   background-color: beige;
 }
+
+.author-input {
+  font-style: italic;
+}
