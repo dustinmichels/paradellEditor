@@ -1,12 +1,12 @@
 Vue.createApp({
   created() {
-    // parse URL params
+    // parse URL params (view mode and poem text)
     let urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("poem")) {
-      this.loadFromUrl(urlParams.get("poem"));
-    }
     if (urlParams.has("mode")) {
       this.mode = urlParams.get("mode");
+    }
+    if (urlParams.has("poem")) {
+      this.loadFromUrl(urlParams.get("poem"));
     }
     // register hotkey to close modal
     window.addEventListener("keydown", (e) => {
@@ -18,11 +18,12 @@ Vue.createApp({
 
   data() {
     return {
-      showModal: false,
-      mode: "compose",
-      timeout: null,
-      notification: "",
-      poemInput: "",
+      showModal: false, // controls visibility of "about" modal
+      mode: "compose", // controls which tab is active
+      notification: "", // when present, displays notification (raw HTML)
+      timeout: null, // makes notifications disappear
+      poemInput: "", // linked to "paste" tab
+      // Poem data
       title: "",
       author: "",
       l1: "",
@@ -43,6 +44,7 @@ Vue.createApp({
       l22: "",
       l23: "",
       l24: "",
+      // Examples paradelles
       examples: [
         "\"Beneath the Dripping Cypress Trees\"\nBy: Sally Ann Roberts\n\n'Tis the breeze beneath the cypress trees,\n'Tis the breeze beneath the cypress trees,\nWhere shady branches bend and bow,\nWhere shady branches bend and bow.\nBeneath the bend and branches breeze,\nWhere the cypress' bow 'tis shady trees.\n\nInk like stains of sap fold down,\nInk like stains of sap fold down,\nBrown and dripping tears that keep,\nBrown and dripping tears that keep.\nSap like ink and stains of brown,\nTears that fold keep dripping down.\n\nWill such variegated colors blend,\nWill such variegated colors blend,\nAway within envelope of leaves,\nAway within envelope of leaves.\nOf such colors envelope within,\nVariegated leaves away will blend.\n\nWithin the sap 'tis shady brown,\nAnd keep the breeze of that fold down,\nVariegated stains away will blend,\nWhere colors bow and branches bend.\nTears of ink envelope like leaves,\nBeneath such dripping cypress trees.",
         '"A Paradelle of Winged Flight"\nBy: Mary Ellen Clark\n\nTwilight falls, darkness cover me\nTwilight falls, darkness cover me\nas gentle slumber lures awakening dreams\nas gentle slumber lures awakening dreams\ncover me gentle twilight, darkness lures dreams,\nawakening as slumber falls.\n\nJourney on celestial wings through astral visions\nJourney on celestial wings through astral visions\nand hover above earth-bound limitations\nand hover above earth-bound limitations\non celestial wings, hover above earth bound limitations\nand journey through astral visions.\n\nExplore the expansiveness of self,\nExplore the expansiveness of self,\nlook within and discover your untapped wealth\nlook within and discover your untapped wealth\nlook within the expansiveness of self,\ndiscover and explore your untapped wealth.\n\ncover me, dreams look within darkness\njourney -- discover your gentle awakening;\nslumber lures the expansiveness of self\nthrough astral visions.  Hover above\nearthbound limitations on celestial wings,\nand as twilight falls, explore wealth -- untapped.',
@@ -54,11 +56,7 @@ Vue.createApp({
   },
 
   methods: {
-    getRandomExample() {
-      return this.examples[Math.floor(Math.random() * this.examples.length)];
-    },
-
-    clear() {
+    clearPoemData() {
       this.title = "";
       this.author = "";
       this.l1 = "";
@@ -81,39 +79,32 @@ Vue.createApp({
       this.l24 = "";
     },
 
+    /** Create string from poem data */
     fmtPoemToString() {
-      title = "";
+      let title = "";
       if (this.title) {
         title = `"${this.title}"`;
       }
-
-      author = "";
+      let author = "";
       if (this.author) {
         author = `By: ${this.author}`;
       }
-
-      let poem = [
-        this.l1,
-        this.l1,
-        this.l3,
-        this.l3,
-        this.l5,
-        this.l6,
-        "",
-        this.l7,
-        this.l7,
-        this.l9,
-        this.l9,
-        this.l11,
-        this.l12,
-        "",
+      // stanzas
+      let s1 = [this.l1, this.l1, this.l3, this.l3, this.l5, this.l6].join(
+        "\n"
+      );
+      let s2 = [this.l7, this.l7, this.l9, this.l9, this.l11, this.l12].join(
+        "\n"
+      );
+      let s3 = [
         this.l13,
         this.l13,
         this.l15,
         this.l15,
         this.l17,
         this.l18,
-        "",
+      ].join("\n");
+      let s4 = [
         this.l19,
         this.l20,
         this.l21,
@@ -121,24 +112,15 @@ Vue.createApp({
         this.l23,
         this.l24,
       ].join("\n");
-      return [title, author, "", poem].join("\n");
+      return [title, author, "", s1, "", s2, "", s3, "", s4].join("\n");
     },
 
-    tryToParse(str) {
-      try {
-        this.parsePoemFromString(str);
-      } catch {
-        this.notification = "Could not parse poem from URL.";
-      }
-    },
-
+    /** Parse poem string into data */
     parsePoemFromString(str) {
       let lines = str.split("\n");
       // meta
-      const title = lines?.[0];
-      this.title = title.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
-      const author = lines?.[1];
-      this.author = author?.slice(4);
+      this.title = lines?.[0].match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
+      this.author = lines?.[1]?.slice(4);
       // stanza 1
       this.l1 = lines?.[0 + 3];
       this.l3 = lines?.[2 + 3];
@@ -163,44 +145,63 @@ Vue.createApp({
       this.l24 = lines?.[26 + 3];
     },
 
+    tryToParsePoemFromString(str) {
+      try {
+        this.parsePoemFromString(str);
+      } catch {
+        this.notification = "Could not parse poem from URL.";
+      }
+    },
+
+    /**
+     * Create shareable link & copy to clipboard.
+     * Also set to url & create notification.
+     */
     share() {
-      // formulate url
       let baseUrl = window.location.href.split("?")[0];
-      let base64Poem = compressToEncodedURI(this.fmtPoemToString());
-      let url = `${baseUrl}?mode=view&poem=${base64Poem}`;
-      console.log(url);
-      navigator.clipboard.writeText(url);
-      // change current URL
-      window.history.pushState({}, document.title, url);
-      // launch notification
+      let URIencodedPoem = compressToEncodedURI(this.fmtPoemToString());
+      let url = `${baseUrl}?mode=view&poem=${URIencodedPoem}`;
+      navigator.clipboard.writeText(url); // copy to clipboard
+      window.history.pushState({}, document.title, url); // change current URL
       this.notification = `Shareable URL copied to clipboard! <a target="_blank" href="${url}">Link</a>`;
     },
 
+    /** Load poem from URL param */
     loadFromUrl(encodedPoem) {
       let decodedPoem = decompressFromEncodedURI(encodedPoem);
       this.load(decodedPoem);
     },
 
+    /** Load poem from paste menu */
     loadFromInput(poemString) {
       this.load(poemString);
       this.poemInput = "";
       this.mode = "compose";
     },
 
+    /** Load random poem from example list */
     loadRandom() {
       let poemString = this.getRandomExample();
       this.load(poemString);
-      this.poemInput = "";
       this.mode = "compose";
     },
 
     load(poemString) {
-      this.clear();
-      this.tryToParse(poemString);
+      this.clearPoemData();
+      this.tryToParsePoemFromString(poemString);
+    },
+
+    /**
+     * Load random poem from examples
+     * @returns string
+     */
+    getRandomExample() {
+      return this.examples[Math.floor(Math.random() * this.examples.length)];
     },
   },
 
   watch: {
+    /** Whenever notification is set, clear after a delay */
     notification: function () {
       window.clearTimeout(this.timeout);
       this.timeout = setTimeout(() => (this.notification = false), 5000);
@@ -208,16 +209,25 @@ Vue.createApp({
   },
 
   computed: {
+    /** Displayed on the "read" tab */
     wholePoem() {
       return this.fmtPoemToString();
     },
 
+    // --------------------------
+    // These are used to create and color the "tags" of used/unused words.
+    //   * upper = words in opening couplets
+    //   * lower = words used in closing couplet
+    //   * used = words in upper and lower
+    //   * extra = words in lower but not upper
+    // --------------------------
+
     // --- stanza 1 ---
     s1upper() {
-      return tokenizeStanzas([this.l1, this.l3]);
+      return tokenizeLines([this.l1, this.l3]);
     },
     s1lower() {
-      return tokenizeStanzas([this.l5, this.l6]);
+      return tokenizeLines([this.l5, this.l6]);
     },
     s1used() {
       return findUsed(this.s1upper, this.s1lower);
@@ -227,10 +237,10 @@ Vue.createApp({
     },
     // --- stanza 2 ---
     s2upper() {
-      return tokenizeStanzas([this.l7, this.l9]);
+      return tokenizeLines([this.l7, this.l9]);
     },
     s2lower() {
-      return tokenizeStanzas([this.l11, this.l12]);
+      return tokenizeLines([this.l11, this.l12]);
     },
     s2used() {
       return findUsed(this.s2upper, this.s2lower);
@@ -240,10 +250,10 @@ Vue.createApp({
     },
     // --- stanza 3 ---
     s3upper() {
-      return tokenizeStanzas([this.l13, this.l15]);
+      return tokenizeLines([this.l13, this.l15]);
     },
     s3lower() {
-      return tokenizeStanzas([this.l17, this.l18]);
+      return tokenizeLines([this.l17, this.l18]);
     },
     s3used() {
       return findUsed(this.s3upper, this.s3lower);
@@ -253,7 +263,7 @@ Vue.createApp({
     },
     // --- stanza 4 ---
     s4upper() {
-      return tokenizeStanzas([
+      return tokenizeLines([
         this.l1,
         this.l3,
         this.l7,
@@ -263,7 +273,7 @@ Vue.createApp({
       ]);
     },
     s4lower() {
-      return tokenizeStanzas([
+      return tokenizeLines([
         this.l19,
         this.l20,
         this.l21,
@@ -285,14 +295,19 @@ Vue.createApp({
 
 function tokenize(words) {
   words = words.replace(/[^A-Za-z0-9\s]/g, " ");
-  let tokens = words.toLowerCase().split(" ");
+  const tokens = words.toLowerCase().split(" ");
   return tokens.filter((t) => t != "");
 }
 
-function tokenizeStanzas(stanzas) {
+/**
+ * Tokenize each line and combine tokens into single array
+ * @param {string[]} lines
+ * @returns list of tokens
+ */
+function tokenizeLines(lines) {
   try {
     let tokens = [];
-    stanzas.forEach((s) => {
+    lines.forEach((s) => {
       tokens.push(...tokenize(s));
     });
     return tokens;
