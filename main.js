@@ -89,22 +89,28 @@ Vue.createApp({
       if (this.author) {
         author = `By: ${this.author}`;
       }
-      // stanzas
-      let s1 = [this.l1, this.l1, this.l3, this.l3, this.l5, this.l6].join(
-        "\n"
-      );
-      let s2 = [this.l7, this.l7, this.l9, this.l9, this.l11, this.l12].join(
-        "\n"
-      );
-      let s3 = [
+      let lines = [
+        this.l1,
+        this.l1,
+        this.l3,
+        this.l3,
+        this.l5,
+        this.l6,
+        "",
+        this.l7,
+        this.l7,
+        this.l9,
+        this.l9,
+        this.l11,
+        this.l12,
+        "",
         this.l13,
         this.l13,
         this.l15,
         this.l15,
         this.l17,
         this.l18,
-      ].join("\n");
-      let s4 = [
+        "",
         this.l19,
         this.l20,
         this.l21,
@@ -112,7 +118,7 @@ Vue.createApp({
         this.l23,
         this.l24,
       ].join("\n");
-      return [title, author, "", s1, "", s2, "", s3, "", s4].join("\n");
+      return [title, author, "", lines].join("\n");
     },
 
     /** Parse poem string into data */
