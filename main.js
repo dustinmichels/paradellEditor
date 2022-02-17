@@ -1,4 +1,4 @@
-Vue.createApp({
+const app = Vue.createApp({
   created() {
     // parse URL params (view mode and poem text)
     let urlParams = new URLSearchParams(window.location.search);
@@ -81,14 +81,8 @@ Vue.createApp({
 
     /** Create string from poem data */
     fmtPoemToString() {
-      let title = "";
-      if (this.title) {
-        title = `"${this.title}"`;
-      }
-      let author = "";
-      if (this.author) {
-        author = `By: ${this.author}`;
-      }
+      title = this.title ? `"${this.title}"` : "";
+      author = this.author ? `By: ${this.author}` : "";
       let lines = [
         this.l1,
         this.l1,
@@ -219,85 +213,42 @@ Vue.createApp({
     wholePoem() {
       return this.fmtPoemToString();
     },
+  },
+});
 
-    // --------------------------
-    // These are used to create and color the "tags" of used/unused words.
-    //   * upper = words in opening couplets
-    //   * lower = words used in closing couplet
-    //   * used = words in upper and lower
-    //   * extra = words in lower but not upper
-    // --------------------------
-
-    // --- stanza 1 ---
-    s1upper() {
-      return tokenizeLines([this.l1, this.l3]);
+app.component("StanzaTags", {
+  props: ["upperLines", "lowerLines"],
+  template: `
+    <div class="tags">
+      <span
+        v-for="(word, index) in upperTokens"
+        v-bind:class="{tag: true, 'is-success': usedTokens[index] }"
+      >
+        {{ word }}
+      </span>
+      <span v-for="word in extraTokens" class="tag is-danger">{{ word }}</span>
+    </div>`,
+  computed: {
+    upperTokens() {
+      return tokenizeLines(this.upperLines);
     },
-    s1lower() {
-      return tokenizeLines([this.l5, this.l6]);
+    lowerTokens() {
+      return tokenizeLines(this.lowerLines);
     },
-    s1used() {
-      return findUsed(this.s1upper, this.s1lower);
+    usedTokens() {
+      return findUsed(this.upperTokens, this.lowerTokens);
     },
-    s1extra() {
-      return findExtra(this.s1upper, this.s1lower);
-    },
-    // --- stanza 2 ---
-    s2upper() {
-      return tokenizeLines([this.l7, this.l9]);
-    },
-    s2lower() {
-      return tokenizeLines([this.l11, this.l12]);
-    },
-    s2used() {
-      return findUsed(this.s2upper, this.s2lower);
-    },
-    s2extra() {
-      return findExtra(this.s2upper, this.s2lower);
-    },
-    // --- stanza 3 ---
-    s3upper() {
-      return tokenizeLines([this.l13, this.l15]);
-    },
-    s3lower() {
-      return tokenizeLines([this.l17, this.l18]);
-    },
-    s3used() {
-      return findUsed(this.s3upper, this.s3lower);
-    },
-    s3extra() {
-      return findExtra(this.s3upper, this.s3lower);
-    },
-    // --- stanza 4 ---
-    s4upper() {
-      return tokenizeLines([
-        this.l1,
-        this.l3,
-        this.l7,
-        this.l9,
-        this.l13,
-        this.l15,
-      ]);
-    },
-    s4lower() {
-      return tokenizeLines([
-        this.l19,
-        this.l20,
-        this.l21,
-        this.l22,
-        this.l23,
-        this.l24,
-      ]);
-    },
-    s4used() {
-      return findUsed(this.s4upper, this.s4lower);
-    },
-    s4extra() {
-      return findExtra(this.s4upper, this.s4lower);
+    extraTokens() {
+      return findExtra(this.upperTokens, this.lowerTokens);
     },
   },
-}).mount("#app");
+});
 
+app.mount("#app");
+
+// =========================
 // --- Helper functions ---
+// =========================
 
 function tokenize(words) {
   words = words.replace(/[^A-Za-z0-9\s]/g, " ");

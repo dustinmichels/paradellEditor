@@ -260,19 +260,8 @@
                 </div>
               </div>
               <div class="column">
-                <div>
-                  <div class="tags">
-                    <span
-                      v-for="(word, index) in s1upper"
-                      v-bind:class="{tag: true, 'is-success': s1used[index] }"
-                    >
-                      {{ word }}
-                    </span>
-                    <span v-for="word in s1extra" class="tag is-danger"
-                      >{{ word }}</span
-                    >
-                  </div>
-                </div>
+                <stanza-tags :upper-lines="[l1, l3]" :lower-lines="[l5, l6]">
+                </stanza-tags>
               </div>
             </div>
             <!-- Second Stanza -->
@@ -303,19 +292,8 @@
                 </div>
               </div>
               <div class="column">
-                <div class="">
-                  <div class="tags">
-                    <span
-                      v-for="(word, index) in s2upper"
-                      v-bind:class="{tag: true, 'is-success': s2used[index] }"
-                    >
-                      {{ word }}
-                    </span>
-                    <span v-for="word in s2extra" class="tag is-danger"
-                      >{{ word }}</span
-                    >
-                  </div>
-                </div>
+                <stanza-tags :upper-lines="[l7, l9]" :lower-lines="[l11, l12]">
+                </stanza-tags>
               </div>
             </div>
             <!-- Third Stanza -->
@@ -346,19 +324,11 @@
                 </div>
               </div>
               <div class="column">
-                <div class="">
-                  <div class="tags">
-                    <span
-                      v-for="(word, index) in s3upper"
-                      v-bind:class="{tag: true, 'is-success': s3used[index] }"
-                    >
-                      {{ word }}
-                    </span>
-                    <span v-for="word in s3extra" class="tag is-danger"
-                      >{{ word }}</span
-                    >
-                  </div>
-                </div>
+                <stanza-tags
+                  :upper-lines="[l13, l15]"
+                  :lower-lines="[l17, l18]"
+                >
+                </stanza-tags>
               </div>
             </div>
             <!-- Fourth Stanza -->
@@ -379,18 +349,11 @@
                 </div>
               </div>
               <div class="column">
-                <div class="">
-                  <div class="tags">
-                    <span
-                      v-for="(word, index) in s4upper"
-                      v-bind:class="{tag: true, 'is-success': s4used[index] }"
-                      >{{ word }}
-                    </span>
-                    <span v-for="word in s4extra" class="tag is-danger"
-                      >{{ word }}</span
-                    >
-                  </div>
-                </div>
+                <stanza-tags
+                  :upper-lines="[l1, l3, l7, l9, l13, l15]"
+                  :lower-lines="[l19, l20, l21, l22, l23, l24]"
+                >
+                </stanza-tags>
               </div>
             </div>
           </div>
