@@ -1,0 +1,29 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
+body,
+input,
+textarea,
+span {
+  font-family: "Courier Prime", monospace;
+}
+
+.modal-card-body,
+.alt-style {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+input {
+  caret-color: #6a5acd;
+}
+
+.title-input {
+  font-weight: bold;
+}
+
+.author-input {
+  font-style: italic;
+}
+
+.viewarea {
+  background-color: beige;
+}
