@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { compressToEncodedURI, decompressFromEncodedURI } from "../helper";
+import { compressToEncodedURI, decompressFromEncodedURI } from "../util/helper";
 import StanzaTags from "./StanzaTags.vue";
 import Modal from "./Modal.vue";
 

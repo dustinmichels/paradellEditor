@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { findExtra, findUsed, tokenizeLines } from "../tags";
+import { findExtra, findUsed, tokenizeLines } from "../util/tags";
 import { PropType } from "vue";
 
 export default defineComponent({
