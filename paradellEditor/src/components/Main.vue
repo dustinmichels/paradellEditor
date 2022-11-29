@@ -11,7 +11,7 @@ export default defineComponent({
       showModal: false, // controls visibility of "about" modal
       mode: "compose", // controls which tab is active
       notification: "", // when present, displays notification (raw HTML)
-      timeout: null, // makes notifications disappear
+      timeout: -1, // makes notifications disappear
       poemInput: "", // linked to "paste" tab
       // Poem data
       title: "",
@@ -52,8 +52,7 @@ export default defineComponent({
       this.mode = urlParams.get("mode") || "";
     }
     if (urlParams.has("poem")) {
-      // this.loadFromUrl(urlParams.get("poem"));
-      console.log("skip...");
+      this.loadFromUrl(urlParams.get("poem"));
     }
     // register hotkey to close modal
     window.addEventListener("keydown", (e) => {
@@ -127,8 +126,7 @@ export default defineComponent({
     parsePoemFromString(str: string) {
       let lines = str.split("\n");
       // meta
-      // this.title = lines?.[0].match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
-      this.title = "";
+      this.title = lines?.[0].match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
       this.author = lines?.[1]?.slice(4);
       // stanza 1
       this.l1 = lines?.[0 + 3];
@@ -176,32 +174,33 @@ export default defineComponent({
     },
 
     /** Load poem from URL param */
-    loadFromUrl(encodedPoem: string) {
-      // let decodedPoem = decompressFromEncodedURI(encodedPoem);
-      // this.load(decodedPoem);
-      return;
+    loadFromUrl(encodedPoem: string | null) {
+      if (!encodedPoem) {
+        return;
+      }
+      let decodedPoem = decompressFromEncodedURI(encodedPoem);
+      if (decodedPoem) {
+        this.load(decodedPoem);
+      }
     },
 
     /** Load poem from paste menu */
     loadFromInput(poemString: string) {
-      // this.load(poemString);
-      // this.poemInput = "";
-      // this.mode = "compose";
-      return;
+      this.load(poemString);
+      this.poemInput = "";
+      this.mode = "compose";
     },
 
     /** Load random poem from example list */
     loadRandom() {
-      // let poemString = this.getRandomExample();
-      // this.load(poemString);
-      // this.mode = "compose";
-      return;
+      let poemString = this.getRandomExample();
+      this.load(poemString);
+      this.mode = "compose";
     },
 
     load(poemString: string) {
-      // this.clearPoemData();
-      // this.tryToParsePoemFromString(poemString);
-      return;
+      this.clearPoemData();
+      this.tryToParsePoemFromString(poemString);
     },
 
     /**
@@ -215,10 +214,12 @@ export default defineComponent({
 
   watch: {
     /** Whenever notification is set, clear after a delay */
-    // notification: function () {
-    //   window.clearTimeout(this.timeout);
-    //   this.timeout = setTimeout(() => (this.notification = false), 5000);
-    // },
+    notification: function () {
+      if (this.timeout) {
+        window.clearTimeout(this.timeout);
+      }
+      this.timeout = setTimeout(() => (this.notification = ""), 5000);
+    },
   },
 
   computed: {
@@ -244,8 +245,9 @@ export default defineComponent({
         ></button>
       </header>
       <section class="modal-card-body content">
+        <p>The paradelle is a rigid, modern poetic form.</p>
         <p>
-          The paradelle is a very rigid, modern poetic form. According to
+          According to
           <a target="_blank" href="https://en.wikipedia.org/wiki/Paradelle"
             >Wikipedia</a
           >:
