@@ -3,9 +3,11 @@ import { defineComponent } from "vue";
 import { compressToEncodedURI, decompressFromEncodedURI } from "../util/helper";
 import StanzaTags from "./StanzaTags.vue";
 import Modal from "./Modal.vue";
+import Footer from "./Footer.vue";
+import Stanza from "./Stanza.vue";
 
 export default defineComponent({
-  components: { StanzaTags, Modal },
+  components: { StanzaTags, Modal, Footer, Stanza },
 
   data() {
     return {
@@ -176,13 +178,10 @@ export default defineComponent({
 
     /** Load poem from URL param */
     loadFromUrl(encodedPoem: string | null) {
-      if (!encodedPoem) {
-        return;
-      }
-      let decodedPoem = decompressFromEncodedURI(encodedPoem);
-      if (decodedPoem) {
-        this.load(decodedPoem);
-      }
+      if (!encodedPoem) return;
+      const decodedPoem = decompressFromEncodedURI(encodedPoem);
+      if (!decodedPoem) return;
+      this.load(decodedPoem);
     },
 
     /** Load poem from paste menu */
@@ -233,7 +232,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- "About" pop-up modal -->
   <modal :show="showModal" @close="showModal = false"></modal>
 
   <section class="section">
@@ -376,6 +374,8 @@ export default defineComponent({
             </div>
           </div>
         </div>
+
+        <Stanza />
 
         <!--  First Stanza  -->
         <div class="columns">
@@ -561,17 +561,7 @@ export default defineComponent({
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <p>
-        Created by
-        <a href="https://dustinmichels.com">Dustin Michels</a>. Updated 2022.
-        Source code
-        <a href="https://github.com/dustinmichels/paradellEditor">here</a>.
-      </p>
-    </div>
-  </footer>
+  <Footer />
 </template>
 
 <style></style>
